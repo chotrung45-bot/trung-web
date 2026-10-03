@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TitanForce - Chiến Binh Thực Thụ</title>
-   
+    
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-   
+    
     <style>
         :root {
             --primary: #FF3C00;
@@ -50,6 +50,7 @@
 
         .logo-container { display: flex; align-items: center; gap: 12px; }
         .logo { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); }
+        
         .nav-links { display: flex; gap: 20px; }
         .nav-links a { color: #ccc; text-decoration: none; font-size: 0.9rem; transition: 0.3s; font-weight: 500; position: relative; }
         .nav-links a::after {
@@ -58,6 +59,40 @@
         }
         .nav-links a:hover { color: var(--primary); }
         .nav-links a:hover::after { width: 100%; }
+
+        /* Nút Hamburger Menu (Ẩn trên Desktop) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 0;
+        }
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hiệu ứng chuyển Hamburger sang dấu X */
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+            background-color: var(--primary);
+        }
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+            background-color: var(--primary);
+        }
 
         /* Hero Section */
         .hero {
@@ -148,7 +183,7 @@
         }
         #chat-trigger:hover { transform: scale(1.1) rotate(15deg); }
 
-        /* Thông báo bản quyền khi vào trang (Tự ẩn sau 10s & có nút X) */
+        /* Thông báo bản quyền khi vào trang */
         #copyright-banner {
             position: fixed;
             bottom: 25px;
@@ -196,8 +231,41 @@
             transform: scale(1.2);
         }
 
+        /* --- RESPONSIVE CHO MOBILE (ANDROID & IOS) --- */
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            .menu-toggle {
+                display: flex; /* Hiện nút 3 gạch */
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-in-out, padding 0.3s ease;
+                border-bottom: 1px solid rgba(255, 60, 0, 0.3);
+            }
+
+            .nav-links.active {
+                max-height: 300px; /* Độ cao tối đa khi xổ menu */
+                padding: 20px 0;
+            }
+
+            .nav-links a {
+                padding: 12px 0;
+                width: 100%;
+                text-align: center;
+                font-size: 1rem;
+            }
+
             .hero h1 { font-size: 2.5rem; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
             #copyright-banner { left: 15px; right: 15px; max-width: none; bottom: 15px; }
@@ -211,7 +279,15 @@
         <img src="logo2.jpg" class="logo" alt="TF">
         <span style="font-weight: bold; letter-spacing: 2px; color: #fff;">TITANFORCE</span>
     </div>
-    <div class="nav-links">
+
+    <!-- Nút 3 gạch Hamburger trên thiết bị di động -->
+    <button class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="nav-links" id="nav-links">
         <a href="#">Trang chủ</a>
         <a href="luat.html">Nội quy</a>
         <a href="ranktv.html">Bảng xếp hạng</a>
@@ -228,7 +304,6 @@
 </header>
 
 <div class="container">
-   
     <div class="stats-grid">
         <div class="stat-item" data-aos="fade-up" data-aos-delay="100"><h3>100+</h3><p>Thành viên</p></div>
         <div class="stat-item" data-aos="fade-up" data-aos-delay="200"><h3>Lv.4</h3><p>Cấp độ Quân đoàn</p></div>
@@ -281,7 +356,6 @@
         <p style="margin: 20px 0; color: #ccc; font-size: 1.1rem;">Cánh cửa TitanForce luôn rộng mở đón chờ những mảnh ghép phù hợp.</p>
         <a href="tuyenthanhvien.html" class="btn-join">ĐĂNG KÝ VÀO QUÂN ĐOÀN</a>
     </div>
-
 </div>
 
 <footer>
@@ -313,7 +387,7 @@
     // Khởi tạo AOS
     AOS.init({
         duration: 1000,
-        once: false, // Để hiệu ứng lặp lại khi cuộn lên xuống cho sinh động
+        once: false,
         mirror: false
     });
 
@@ -327,6 +401,32 @@
         }
     });
 
+    // Xử lý Menu 3 gạch cho thiết bị di động (Android & iOS)
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-links');
+
+    menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    // Tự động đóng menu khi bấm vào bất kỳ đường link nào
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+
+    // Tự động đóng menu khi bấm ra ngoài thanh navigation
+    document.addEventListener('click', function(e) {
+        if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        }
+    });
+
     // Hàm đóng banner bản quyền
     function closeCopyrightBanner() {
         const banner = document.getElementById('copyright-banner');
@@ -334,11 +434,11 @@
             banner.classList.add('hidden');
             setTimeout(() => {
                 banner.style.display = 'none';
-            }, 500); // Đợi hiệu ứng mờ dần hoàn tất rồi mới ẩn hẳn
+            }, 500);
         }
     }
 
-    // Tự động ẩn banner bản quyền sau 10 giây (10000ms)
+    // Tự động ẩn banner bản quyền sau 10 giây
     setTimeout(function() {
         closeCopyrightBanner();
     }, 10000);
