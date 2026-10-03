@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clan TF — Tuyển Thành Viên Free Fire</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Montserrat:wght@400;600;700&family=Bebas+Neue&family=Caveat:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff4d00;
+            --primary-glow: rgba(255, 77, 0, 0.5);
+            --bg-dark: #0a0e14;
+            --glass: rgba(22, 30, 47, 0.85);
+            --text: #e6eef8;
+            --muted: #a0aec0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            background: var(--bg-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(255, 77, 0, 0.1) 0%, transparent 70%);
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('logo.jpg') center/cover no-repeat fixed;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        header {
+            padding: 50px 20px 20px;
+            text-align: center;
+            animation: fadeInDown 1s ease forwards;
+        }
+
+        .clan-logo {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 30px var(--primary-glow);
+            transition: 0.5s;
+            object-fit: cover;
+        }
+
+        .clan-logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(to bottom, #fff 30%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px var(--primary-glow));
+        }
+
+        .clan-name-sub {
+            font-family: 'Caveat', cursive;
+            font-size: 40px;
+            color: #fff;
+            display: block;
+            margin-bottom: -15px;
+        }
+
+        .back-home-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 30px;
+            border: 2px solid var(--primary);
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .back-home-btn:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(-3px);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px auto;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: #fff;
+            padding: 15px 30px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .tab-btn:hover::before { left: 100%; }
+
+        .tab-btn.active {
+            background: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+            color: #000;
+        }
+
+        .content-section {
+            max-width: 700px;
+            margin: 0 auto 50px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 77, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            display: none;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .content-section.active { display: block; }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 12px 0 12px 30px;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        ul li::before {
+            content: '⚡';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .action-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .main-link {
+            text-decoration: none;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .btn-reg { background: var(--primary); color: #000; }
+        .btn-copy { background: #2d3748; color: #fff; border: none; cursor: pointer; }
+
+        .main-link:hover { transform: translateY(-3px); filter: brightness(1.2); }
+
+        .sakura {
+            position: fixed;
+            z-index: 100;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .btn-container { flex-direction: column; }
+            .action-links { grid-template-columns: 1fr; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="bg-overlay"></div>
+
+<header>
+    <img src="logo2.jpg" alt="Clan TF Logo" class="clan-logo">
+    <span class="clan-name-sub">Welcome to</span>
+    <h1>Clan TF Global</h1>
+    <p style="color: var(--muted)">Bản lĩnh chiến binh — Đẳng cấp huyền thoại</p>
+    <a href="trangchu.html" class="back-home-btn">⬅ QUAY VỀ TRANG CHỦ</a>
+</header>
+
+<div class="btn-container">
+    <button class="tab-btn" onclick="openTab(event, 'sinh-ton')">🎮 CHẾ ĐỘ SINH TỒN</button>
+    <button class="tab-btn" onclick="openTab(event, 'solo')">🔥 BẬC THẦY SOLO</button>
+</div>
+
+<div id="sinh-ton" class="content-section">
+    <h2>🔥 TUYỂN QUÂN SINH TỒN</h2>
+    <ul>
+        <li><b>Yêu cầu Rank:</b> Cao Thủ trở lên (Mùa hiện tại).</li>
+        <li><b>Chỉ số:</b> Bắn ít nhất 10 kill trong trận test phối hợp.</li>
+        <li><b>Kỹ năng:</b> Sử dụng Mic tốt, có tư duy chiến thuật và di chuyển team.</li>
+        <li><b>Vai trò:</b> Thành thạo ít nhất 1 vị trí (Rush, Sniper, Support).</li>
+    </ul>
+    <div class="action-links">
+        <a href="dangki.html" class="main-link btn-reg">ỨNG TUYỂN NGAY</a>
+        <button class="main-link btn-copy" onclick="copyID('69836174')">SAO CHÉP ID GAME</button>
+    </div>
+</div>
+
+<div id="solo" class="content-section">
+    <h2>⚡ KỸ NĂNG SOLO (KAI 2.5)</h2>
+    <ul>
+        <li><b>Nam:</b> Trên k9 (Test 5/7) | <b>Nữ:</b> Trên k10 (Test 3/7).</li>
+        <li><b>Kỹ năng Kai:</b> Alok, Kelly, Hayato (Không Kairot, không Skin).</li>
+        <li><b>Solo Headshot:</b> Chế độ 500 máu, ưu tiên kỹ năng kéo tâm chuẩn.</li>
+        <li><b>Lưu ý:</b> Test cực gắt.</li>
+    </ul>
+    <div class="action-links">
+        <a href="dangki.html" class="main-link btn-reg">VÀO PHÒNG TEST</a>
+        <button class="main-link btn-copy" onclick="copyID('69836174')">SAO CHÉP ID GAME</button>
+    </div>
+</div>
+
+<footer style="text-align:center;padding:40px;color:var(--muted);font-size:0.8rem;">
+    &copy; <span id="year"></span> CLAN TF — TRÌNH ĐỘ LÀ VĨNH CỬU.
+</footer>
+
+<script>
+function openTab(evt, tabName) {
+    var i, content, tablinks;
+    content = document.getElementsByClassName("content-section");
+    for (i = 0; i < content.length; i++) {
+        content[i].style.display = "none";
+        content[i].classList.remove("active");
+    }
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+    document.getElementById(tabName).style.display = "block";
+    document.getElementById(tabName).classList.add("active");
+    evt.currentTarget.classList.add("active");
+}
+
+function copyID(text) {
+    navigator.clipboard.writeText(text);
+    alert("Đã sao chép ID: " + text);
+}
+
+function createSakura() {
+    const flower = document.createElement('div');
+    flower.className = 'sakura';
+    flower.innerHTML = '🌸';
+    flower.style.left = Math.random() * 100 + 'vw';
+    flower.style.fontSize = Math.random() * 10 + 10 + 'px';
+    flower.style.animationDuration = Math.random() * 3 + 4 + 's';
+    flower.style.opacity = Math.random();
+    document.body.appendChild(flower);
+    setTimeout(() => flower.remove(), 6000);
+}
+setInterval(createSakura, 400);
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

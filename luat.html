@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luật Quân Đoàn TF | Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+    --accent: #ff003c;
+    --secondary: #ffcc00;
+    --bg-dark: #0a0a0c;
+    --glass: rgba(20, 20, 25, 0.85);
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    padding: 40px 20px;
+    color: #e0e0e0;
+    background: var(--bg-dark);
+    background-image: radial-gradient(circle at center, rgba(220,20,60,0.15) 0%, var(--bg-dark) 80%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* Canvas */
+#particle-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Main content */
+.content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    animation: slideUp 0.8s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo */
+.logo-wrapper {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 35px;
+    position: relative;
+}
+
+.logo-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 30px rgba(255,0,60,0.5);
+}
+
+.logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logo-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border: 2px dashed var(--secondary);
+    border-radius: 50%;
+    animation: rotate 10s linear infinite;
+    opacity: 0.5;
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+/* Title */
+h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 6px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    text-align: center;
+    background: linear-gradient(to bottom, #fff 30%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Card */
+.law-card {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 40px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    position: relative;
+    text-align: left;
+}
+
+.law-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--accent), var(--secondary));
+}
+
+/* List */
+.law-list {
+    list-style: none;
+}
+
+.law-list > li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    transition: 0.3s ease;
+}
+
+.law-list > li:hover {
+    background: rgba(255,0,60,0.1);
+    transform: translateX(8px);
+}
+
+.law-list strong {
+    color: var(--secondary);
+}
+
+/* Icon */
+.icon-box {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255,0,60,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+/* Sub list */
+.sub-list {
+    margin-top: 10px;
+    margin-left: 55px;
+}
+
+.sub-list li {
+    padding: 6px 0;
+    font-size: 0.95rem;
+    color: #bbb;
+}
+
+/* Button */
+.back-btn {
+    display: inline-block;
+    margin: 50px auto 0;
+    padding: 15px 40px;
+    border-radius: 50px;
+    border: 2px solid var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: var(--accent);
+    box-shadow: 0 0 25px var(--accent);
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    h1 { font-size: 1.8rem; letter-spacing: 3px; }
+    .law-card { padding: 20px; }
+    .law-list > li { flex-direction: row; font-size: 0.9rem; }
+    .sub-list { margin-left: 45px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<div class="content">
+    <div class="logo-wrapper">
+        <div class="logo-container">
+            <img src="logo2.jpg" alt="TF Logo">
+        </div>
+    </div>
+
+    <h1>Luật Quân Đoàn TF</h1>
+
+    <div class="law-card">
+        <ul class="law-list">
+            <li>
+                <div class="icon-box">🤝</div>
+                <span>Biết <strong>tôn trọng</strong> mọi người, thực hiện văn hóa <strong>trên dưới rõ ràng</strong>.</span>
+            </li>
+            <li>
+                <div class="icon-box">🔥</div>
+                <span><strong>Tinh thần đồng đội:</strong> Hỗ trợ hết mình, tuyệt đối <strong>không toxic</strong>.</span>
+            </li>
+            <li>
+                <div class="icon-box">🎂</div>
+                <span><strong>Độ tuổi:</strong> Ưu tiên K9 trở lên (Trai/Gái từ K12).</span>
+            </li>
+            <li>
+                <div class="icon-box">💬</div>
+                <span>Phải <strong>tương tác box chat</strong>. Rời quân đoàn bắt buộc báo <strong>Chủ QD</strong>.</span>
+            </li>
+            <li>
+                <div class="icon-box">⚠️</div>
+                <span><strong>Offline 7 ngày</strong> không lý do = Kick.</span>
+            </li>
+            <li>
+                <div class="icon-box">🎯</div>
+                <span><strong>Tuyển quân:</strong> Nam (5/7 round), Nữ (2-3/7 round). Ưu tiên Mobile.</span>
+            </li>
+            <li style="flex-direction: column; align-items: flex-start;">
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-box">⚔️</div>
+                    <strong>Phân chia 2 nhánh hoạt động:</strong>
+                </div>
+                <ul class="sub-list">
+                    <li>• Nhánh 1: Chuyên giải đấu & Sinh tồn (Survival).</li>
+                    <li>• Nhánh 2: Chuyên Tử chiến & Kỹ năng Headshot.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <a href="trangchu.html" class="back-btn">QUAY VỀ TRANG CHỦ</a>
+</div>
+
+<script>
+    // Hiệu ứng hạt "Tàn lửa" (Embers)
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Ember {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 10;
+            this.size = Math.random() * 3 + 1;
+            this.speedY = Math.random() * -1.5 - 0.5;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.opacity = Math.random() * 0.5 + 0.5;
+            this.color = Math.random() > 0.5 ? '#ff4d00' : '#ffcc00';
+        }
+        update() {
+            this.y += this.speedY;
+            this.x += this.speedX;
+            this.opacity -= 0.005;
+            if (this.opacity <= 0 || this.y < -10) this.reset();
+        }
+        draw() {
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 40; i++) particles.push(new Ember());
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Chặn Copy (Giữ nguyên của bạn nhưng tinh gọn)
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey || e.key === 'F12') e.preventDefault();
+    });
+</script>
+</body>
+</html>
